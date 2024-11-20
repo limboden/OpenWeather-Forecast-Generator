@@ -13,7 +13,7 @@ class WeatherService {
 
   // TODO: Create fetchLocationData method
   private async fetchLocationData(cityName: string, stateCode: number, countryCode: string, limit: string) {
-    await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${cityName},${stateCode},${countryCode}&limit=${limit}&appid=${API_KEY}`)
+    await fetch(`${BASE_URL}/geo/1.0/direct?q=${cityName},${stateCode},${countryCode}&limit=${limit}&appid=${API_KEY}`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
