@@ -33,7 +33,7 @@ class Weather {
 // TODO: Complete the WeatherService class
 class WeatherService {
   // TODO: Define the baseURL, API key, and city name properties
-  baseURL = `${BASE_URL}/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}`;
+  BASE_URL = `${BASE_URL}/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}`;
   API_KEY = API_KEY;
   cityName: string = ''
 
@@ -46,13 +46,15 @@ class WeatherService {
     };
   }
 
-
   // TODO: Create destructureLocationData method
   // private destructureLocationData(locationData: Coordinates): Coordinates {}
-  // TODO: Create buildGeocodeQuery method
-  // private buildGeocodeQuery(): string {}
-  // TODO: Create buildWeatherQuery method
-  // private buildWeatherQuery(coordinates: Coordinates): string {}
+  private buildWeatherQuery(coordinates: Coordinates): string {
+    return `${this.BASE_URL}weather?q=${coordinates.city}&appid=${this.API_KEY}&units=imperial`;
+  }
+
+  private buildForecastQuery(coordinates: Coordinates): string {
+    return `${this.BASE_URL}forecast?q=${coordinates.city}&appid=${this.API_KEY}&units=imperial`;
+  }
   // TODO: Create fetchAndDestructureLocationData method
   // private async fetchAndDestructureLocationData() {}
   // TODO: Create fetchWeatherData method
