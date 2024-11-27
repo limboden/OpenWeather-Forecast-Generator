@@ -6,6 +6,11 @@ const API_KEY = process.env.API_KEY;
 const BASE_URL = process.env.API_BASE_URL;
 // TODO: Define an interface for the Coordinates object
 
+//given a city, we would search for additional information about this city, like country or state or both,
+//then, with this information, we would put it into a query that returns the coordinates of the city.
+//then, with the coordinates, we get all the weather and forecast data with that
+
+
 interface Coordinates {
   id: string;
   city: string;
