@@ -43,7 +43,7 @@ class Weather {
 // TODO: Complete the WeatherService class
 class WeatherService {
   // TODO: Define the baseURL, API key, and city name properties
-  BASE_URL = `${BASE_URL}/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}`;
+  BASE_URL = BASE_URL
   API_KEY = API_KEY;
   cityName: string = ''
 
@@ -59,11 +59,7 @@ class WeatherService {
   // TODO: Create destructureLocationData method
   // private destructureLocationData(locationData: Coordinates): Coordinates {}
   private buildWeatherQuery(coordinates: Coordinates): string {
-    return `${this.BASE_URL}weather?q=${coordinates.city}&appid=${this.API_KEY}&units=imperial`;
-  }
-
-  private buildForecastQuery(coordinates: Coordinates): string {
-    return `${this.BASE_URL}forecast?q=${coordinates.city}&appid=${this.API_KEY}&units=imperial`;
+    return `${BASE_URL}/data/2.5/forecast?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${API_KEY}&units=imperial`
   }
   // TODO: Create fetchAndDestructureLocationData method
   // private async fetchAndDestructureLocationData() {}
@@ -73,15 +69,6 @@ class WeatherService {
     const response = await fetch(queryUrl);
     if (!response.ok) {
       throw new Error(`Error: Unable to get weather data`);
-    }
-    return response.json();
-  }
-
-  private async fetchForecastData(coordinates: Coordinates): Promise<any> {
-    const queryUrl = this.buildForecastQuery(coordinates);
-    const response = await fetch(queryUrl);
-    if (!response.ok) {
-      throw new Error(`Error: Unable to get forecast data`);
     }
     return response.json();
   }
