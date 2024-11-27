@@ -14,8 +14,8 @@ const BASE_URL = process.env.API_BASE_URL;
 interface City {
   id: string;
   city: string;
-  stateProv: string;
-  country: string;
+  stateOrProvince?: string;
+  country?: string;
 }
 
 interface Coordinates {
@@ -47,13 +47,13 @@ class WeatherService {
   API_KEY = API_KEY;
   cityName: string = ''
 
-  private createCoordinates(city: string, stateProv: string = '', country: string = ''): Coordinates {
-    return {
-      id: uuid(),
-      city,
-      stateProv,
-      country
-    };
+  private async fetchCoordinates(city: string, stateOrProvince: string = '', country: string = ''): Promise<any> {
+    const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city},${stateOrProvince},${country}&limit={1}&appid=${API_KEY}`);
+
+    if (!response.ok) {
+      throw new Error(`Error: Unable to get weather data`);
+    }
+    return response.json();
   }
 
   // TODO: Create destructureLocationData method
