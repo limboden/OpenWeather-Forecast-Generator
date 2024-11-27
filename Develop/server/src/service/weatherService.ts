@@ -11,11 +11,16 @@ const BASE_URL = process.env.API_BASE_URL;
 //then, with the coordinates, we get all the weather and forecast data with that
 
 
-interface Coordinates {
+interface City {
   id: string;
   city: string;
   stateProv: string;
   country: string;
+}
+
+interface Coordinates {
+  lat: number;
+  lon: number;
 }
 
 // TODO: Define a class for the Weather object
