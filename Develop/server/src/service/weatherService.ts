@@ -37,20 +37,15 @@ class WeatherService {
   API_KEY = API_KEY;
   cityName: string = ''
 
-  // TODO: Create fetchLocationData method
-  private async fetchLocationData(query: string) {
-
-
-    fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=${API_KEY}`)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      });
-    http://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=${API_KEY}
-    const latFromData = data[0].lat;
-    const lonFromData = data[0].lon
-
+  private createCoordinates(city: string, stateProv: string = '', country: string = ''): Coordinates {
+    return {
+      id: uuid(),
+      city,
+      stateProv,
+      country
+    };
   }
+
 
   // TODO: Create destructureLocationData method
   // private destructureLocationData(locationData: Coordinates): Coordinates {}
