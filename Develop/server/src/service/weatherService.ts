@@ -67,6 +67,16 @@ class WeatherService {
     return response.json();
   }
 
+  private async fetchForecastData(coordinates: Coordinates): Promise<any> {
+    const queryUrl = this.buildForecastQuery(coordinates);
+    const response = await fetch(queryUrl);
+    if (!response.ok) {
+      throw new Error(`Error: Unable to get forecast data`);
+    }
+    return response.json();
+  }
+
+
   // TODO: Build parseCurrentWeather method
   // private parseCurrentWeather(response: any) {}
   // TODO: Complete buildForecastArray method
