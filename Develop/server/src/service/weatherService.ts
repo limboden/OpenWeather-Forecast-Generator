@@ -6,8 +6,10 @@ const BASE_URL = process.env.API_BASE_URL;
 // TODO: Define an interface for the Coordinates object
 
 interface Coordinates {
-  lat: number,
-  lon: number
+  id: string;
+  city: string;
+  stateProv: string;
+  country: string;
 }
 
 // TODO: Define a class for the Weather object
