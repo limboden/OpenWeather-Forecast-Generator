@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import { v4 as uuid } from 'uuid'
 
 dotenv.config();
 const API_KEY = process.env.API_KEY;
@@ -14,8 +15,21 @@ interface Coordinates {
 
 // TODO: Define a class for the Weather object
 class Weather {
+  id: string;
+  city: string;
+  date!: string;
+  icon!: string;
+  iconDescription!: string;
+  tempF!: number;
+  windSpeed!: number;
+  humidity!: number;
 
+  constructor(city: string) {
+    this.city = city;
+    this.id = uuid();
+  }
 }
+
 // TODO: Complete the WeatherService class
 class WeatherService {
   // TODO: Define the baseURL, API key, and city name properties
