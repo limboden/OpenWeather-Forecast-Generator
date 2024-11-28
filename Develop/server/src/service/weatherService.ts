@@ -48,12 +48,14 @@ class WeatherService {
   API_KEY = API_KEY;
   cityName: string = ''
 
-  private async fetchCoordinates(city: string, stateOrProvince: string = '', country: string = ''): Promise<any> {
-    const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city},${stateOrProvince},${country}&limit={1}&appid=${API_KEY}`);
+  // , stateOrProvince: string = '', country: string = '' |||||  ,${stateOrProvince},${country}
+  private async fetchCoordinates(city: string): Promise<any> {
+    const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${API_KEY}`);
 
     if (!response.ok) {
       throw new Error(`Error: Unable to get weather data`);
     }
+    console.log(JSON.stringify(response))
     return response.json();
   }
 
@@ -75,6 +77,7 @@ class WeatherService {
   }
 
   private formatCityToCoordinatesJSON(response: any): Coordinates {
+    console.log(response)
     const cityLat = response[0].lat
     const cityLon = response[0].lat
     return { lat: cityLat, lon: cityLon }
@@ -102,11 +105,13 @@ class WeatherService {
     const fiveDayForecast = [];
     const forecastList = response.list;
     for (let i = 0; i < forecastList.length; i++) {
-      if (forecastList[i].dt_txt.contains("00:00:00")) {
+      const dateTimeText: string = forecastList[i].dt_txt
+      if (dateTimeText.endsWith("00:00:00")) {
         isToday = false;
       }
-      if (forecastList[i].dt_txt.contains("12:00:00") && !isToday) {
-        const currentWeatherJSON = forecastList.list[i]
+      if (dateTimeText.endsWith("12:00:00") && !isToday) {
+        console.log(JSON.stringify(forecastList))
+        const currentWeatherJSON = forecastList[i]
         const currentTemp = currentWeatherJSON.main.temp
         const currentHumidity = currentWeatherJSON.main.humidity
         const currentWeatherDescription = currentWeatherJSON.weather[0].iconDescription
@@ -127,9 +132,9 @@ class WeatherService {
   // private buildForecastArray(currentWeather: Weather, weatherData: any[]) {}
   // TODO: Complete getWeatherForCity method
   async getWeatherForCity(city: string): Promise<Weather[]> {
-    const cityCoordinatesJSON = this.fetchCoordinates(city)
+    const cityCoordinatesJSON = await this.fetchCoordinates(city)
     const cityCoordinates = this.formatCityToCoordinatesJSON(cityCoordinatesJSON)
-    const fetchedWeatherDataBasedOnCoordinates = this.fetchWeatherData(cityCoordinates) // this is the giant JSON at https://samples.openweathermap.org/data/2.5/forecast?id=524901&appid=%3Cspan%20class=
+    const fetchedWeatherDataBasedOnCoordinates = await this.fetchWeatherData(cityCoordinates) // this is the giant JSON at https://samples.openweathermap.org/data/2.5/forecast?id=524901&appid=%3Cspan%20class=
     const currentWeather = this.parseCurrentWeather(fetchedWeatherDataBasedOnCoordinates, city)
     // currentWeather is a Weather Object!!!!
     const forecast = this.parseWeatherForecast(fetchedWeatherDataBasedOnCoordinates, city)
