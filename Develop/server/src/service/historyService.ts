@@ -1,6 +1,18 @@
+import { v4 as uuid } from 'uuid'
+
 // TODO: Define a City class with name and id properties
+class Cities {
+  name: string;
+  id: string;
+
+  constructor(name: string) {
+    this.name = name;
+    this.id = uuid();
+  }
+}
 
 // TODO: Complete the HistoryService class
+
 class HistoryService {
   // TODO: Define a read method that reads from the searchHistory.json file
   // private async read() {}
