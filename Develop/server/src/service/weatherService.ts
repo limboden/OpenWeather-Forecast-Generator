@@ -10,14 +10,6 @@ const BASE_URL = process.env.API_BASE_URL;
 //then, with this information, we would put it into a query that returns the coordinates of the city.
 //then, with the coordinates, we get all the weather and forecast data with that
 
-
-interface City {
-  id: string;
-  city: string;
-  stateOrProvince?: string;
-  country?: string;
-}
-
 interface Coordinates {
   lat: number;
   lon: number;
@@ -37,6 +29,15 @@ class Weather {
   constructor(city: string) {
     this.city = city;
     this.id = uuid();
+  }
+
+  addTheRest(date: string, icon: string, iconDescription: string, tempF: number, windSpeed: number, humidity: number) {
+    this.date = date;
+    this.icon = icon;
+    this.iconDescription = iconDescription
+    this.tempF = tempF;
+    this.windSpeed = windSpeed
+    this.humidity = humidity
   }
 }
 
@@ -81,12 +82,66 @@ class WeatherService {
 
 
   // TODO: Build parseCurrentWeather method
-  // private parseCurrentWeather(response: any) {}
+  private parseCurrentWeather(response: any, city: string): Weather {
+    const currentWeatherJSON = response.list[0]
+    const currentTemp = currentWeatherJSON.main.temp
+    const currentHumidity = currentWeatherJSON.main.humidity
+    const currentWeatherDescription = currentWeatherJSON.weather[0].iconDescription
+    const currentWeatherIcon = currentWeatherJSON.weather[0].icon
+    const currentWindSpeed = currentWeatherJSON.wind.speed
+    const currentDate = currentWeatherJSON.dt_txt
+
+    const currentWeather = new Weather(city)
+    currentWeather.addTheRest(currentDate, currentWeatherIcon, currentWeatherDescription, currentTemp, currentWindSpeed, currentHumidity)
+
+    return currentWeather
+  }
+
+  private parseWeatherForecast(response: any, city: string) {
+    let isToday = true;
+    const fiveDayForecast = [];
+    const forecastList = response.list;
+    for (let i = 0; i < forecastList.length; i++) {
+      if (forecastList[i].dt_txt.contains("00:00:00")) {
+        isToday = false;
+      }
+      if (forecastList[i].dt_txt.contains("12:00:00") && !isToday) {
+        const currentWeatherJSON = forecastList.list[i]
+        const currentTemp = currentWeatherJSON.main.temp
+        const currentHumidity = currentWeatherJSON.main.humidity
+        const currentWeatherDescription = currentWeatherJSON.weather[0].iconDescription
+        const currentWeatherIcon = currentWeatherJSON.weather[0].icon
+        const currentWindSpeed = currentWeatherJSON.wind.speed
+        const currentDate = currentWeatherJSON.dt_txt
+
+        const currentWeather = new Weather(city)
+        currentWeather.addTheRest(currentDate, currentWeatherIcon, currentWeatherDescription, currentTemp, currentWindSpeed, currentHumidity)
+
+        fiveDayForecast.push(currentWeather)
+      }
+    }
+    console.log(fiveDayForecast)
+
+  }
   // TODO: Complete buildForecastArray method
   // private buildForecastArray(currentWeather: Weather, weatherData: any[]) {}
   // TODO: Complete getWeatherForCity method
   async getWeatherForCity(city: string) {
     const cityCoordinatesJSON = this.fetchCoordinates(city)
+    const cityCoordinates = this.formatCityToCoordinatesJSON(cityCoordinatesJSON)
+    const fetchedWeatherDataBasedOnCoordinates = this.fetchWeatherData(cityCoordinates) // this is the giant JSON at https://samples.openweathermap.org/data/2.5/forecast?id=524901&appid=%3Cspan%20class=
+    const currentWeather = this.parseCurrentWeather(fetchedWeatherDataBasedOnCoordinates, city)
+    // currentWeather is a Weather Object!!!!
+    const forecast = this.parseWeatherForecast(fetchedWeatherDataBasedOnCoordinates, city)
+
+    console.log(currentWeather);
+    console.log(forecast);
+
+
+
+
+
+
   }
 
 
