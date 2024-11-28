@@ -97,7 +97,7 @@ class WeatherService {
     return currentWeather
   }
 
-  private parseWeatherForecast(response: any, city: string) {
+  private parseWeatherForecast(response: any, city: string): Weather[] {
     let isToday = true;
     const fiveDayForecast = [];
     const forecastList = response.list;
@@ -120,13 +120,13 @@ class WeatherService {
         fiveDayForecast.push(currentWeather)
       }
     }
-    console.log(fiveDayForecast)
+    return fiveDayForecast
 
   }
   // TODO: Complete buildForecastArray method
   // private buildForecastArray(currentWeather: Weather, weatherData: any[]) {}
   // TODO: Complete getWeatherForCity method
-  async getWeatherForCity(city: string) {
+  async getWeatherForCity(city: string): Promise<Weather[]> {
     const cityCoordinatesJSON = this.fetchCoordinates(city)
     const cityCoordinates = this.formatCityToCoordinatesJSON(cityCoordinatesJSON)
     const fetchedWeatherDataBasedOnCoordinates = this.fetchWeatherData(cityCoordinates) // this is the giant JSON at https://samples.openweathermap.org/data/2.5/forecast?id=524901&appid=%3Cspan%20class=
@@ -134,12 +134,10 @@ class WeatherService {
     // currentWeather is a Weather Object!!!!
     const forecast = this.parseWeatherForecast(fetchedWeatherDataBasedOnCoordinates, city)
 
-    console.log(currentWeather);
-    console.log(forecast);
+    const returnArray = [currentWeather, ...forecast]
 
 
-
-
+    return returnArray
 
 
   }
