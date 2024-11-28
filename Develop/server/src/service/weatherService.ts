@@ -50,7 +50,7 @@ class WeatherService {
 
   // , stateOrProvince: string = '', country: string = '' |||||  ,${stateOrProvince},${country}
   private async fetchCoordinates(city: string): Promise<any> {
-    const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${API_KEY}`);
+    const response = await fetch(`${this.BASE_URL}/geo/1.0/direct?q=${city}&limit=1&appid=${this.API_KEY}`);
 
     if (!response.ok) {
       throw new Error(`Error: Unable to get weather data`);
@@ -62,7 +62,7 @@ class WeatherService {
   // TODO: Create destructureLocationData method
   // private destructureLocationData(locationData: Coordinates): Coordinates {}
   private buildWeatherQuery(coordinates: Coordinates): string {
-    return `${BASE_URL}/data/2.5/forecast?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${API_KEY}&units=imperial`
+    return `${this.BASE_URL}/data/2.5/forecast?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${this.API_KEY}&units=imperial`
   }
   // TODO: Create fetchAndDestructureLocationData method
   // private async fetchAndDestructureLocationData() {}
