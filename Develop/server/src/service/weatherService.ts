@@ -73,6 +73,12 @@ class WeatherService {
     return response.json();
   }
 
+  private formatCityToCoordinatesJSON(response: any): Coordinates {
+    const cityLat = response[0].lat
+    const cityLon = response[0].lat
+    return { lat: cityLat, lon: cityLon }
+  }
+
 
   // TODO: Build parseCurrentWeather method
   // private parseCurrentWeather(response: any) {}
@@ -80,7 +86,7 @@ class WeatherService {
   // private buildForecastArray(currentWeather: Weather, weatherData: any[]) {}
   // TODO: Complete getWeatherForCity method
   async getWeatherForCity(city: string) {
-
+    const cityCoordinatesJSON = this.fetchCoordinates(city)
   }
 
 
