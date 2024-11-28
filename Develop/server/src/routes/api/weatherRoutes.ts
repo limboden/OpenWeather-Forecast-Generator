@@ -4,9 +4,9 @@ const router = Router();
 import HistoryService from '../../service/historyService.js';
 import WeatherService from '../../service/weatherService.js';
 
-// TODO: POST Request with city name to retrieve weather data
+// : POST Request with city name to retrieve weather data
 router.post('/', async (req: Request, res: Response) => {
-  // TODO: GET weather data from city name
+  // : GET weather data from city name
   try {
     const cityName = req.body.cityName
 
@@ -14,7 +14,7 @@ router.post('/', async (req: Request, res: Response) => {
       return res.send({ error: 'City name is required.' })
     }
     const weatherData = await WeatherService.getWeatherForCity(req.body.cityName)
-    // TODO: save city to search history
+    // : save city to search history
     await HistoryService.addCity(weatherData[0].city);
 
     return res.send(weatherData);
@@ -25,10 +25,18 @@ router.post('/', async (req: Request, res: Response) => {
 
 });
 
+
 router.get('/history', async (_req: Request, res: Response) => {
-  const cities = HistoryService.getCities();
-  console.log('city search history');
-  res.send(cities);
+  try {
+    const cities = await HistoryService.getCities();
+    if (cities.length === 0) {
+      return res.send({ message: 'No cities in search history.' });
+    }
+    return res.send(cities);
+  } catch (err: any) {
+    console.log(err);
+    return res.send({ error: err.message });
+  }
 });
 
 router.delete('/history/:id', async (req: Request, res: Response) => {

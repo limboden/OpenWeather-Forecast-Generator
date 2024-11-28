@@ -128,9 +128,7 @@ class WeatherService {
     return fiveDayForecast
 
   }
-  // TODO: Complete buildForecastArray method
-  // private buildForecastArray(currentWeather: Weather, weatherData: any[]) {}
-  // TODO: Complete getWeatherForCity method
+
   async getWeatherForCity(city: string): Promise<Weather[]> {
     const cityCoordinatesJSON = await this.fetchCoordinates(city)
     const cityCoordinates = this.formatCityToCoordinatesJSON(cityCoordinatesJSON)
