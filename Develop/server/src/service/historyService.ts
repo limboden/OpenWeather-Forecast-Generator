@@ -44,7 +44,17 @@ class HistoryService {
     return await this.read();
   }
   // TODO Define an addCity method that adds a city to the searchHistory.json file
-  // async addCity(city: string) {}
+  async addCity(city: string) {
+    try {
+      let cities = await this.getCities();
+      const newCity = new City(city);
+      cities.push(newCity);
+      await this.write(cities);
+      this.read();
+    } catch (error) {
+      console.error('Error adding city:', error)
+    }
+  }
   // * BONUS TODO: Define a removeCity method that removes a city from the searchHistory.json file
   // async removeCity(id: string) {}
 }
