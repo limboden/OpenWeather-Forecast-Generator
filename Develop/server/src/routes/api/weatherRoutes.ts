@@ -25,10 +25,16 @@ router.post('/', async (req: Request, res: Response) => {
 
 });
 
-// TODO: GET search history
-router.get('/history', async (req: Request, res: Response) => { });
+router.get('/history', async (_req: Request, res: Response) => {
+  const cities = HistoryService.getCities();
+  console.log('city search history');
+  res.send(cities);
+});
 
-// * BONUS TODO: DELETE city from search history
-router.delete('/history/:id', async (req: Request, res: Response) => { });
+router.delete('/history/:id', async (req: Request, res: Response) => {
+  let response = HistoryService.removeCity(req.params.id);
+  res.send(response);
+});
+
 
 export default router;
